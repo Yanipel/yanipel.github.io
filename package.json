@@ -1,0 +1,33 @@
+{
+  "name": "y",
+  "version": "1.0.0",
+  "description": "Yanipel presents a new cryptocurrency named Yanipel Coin and his token is the YANI.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Yanipel/yanipel.github.io.git"
+  },
+  "keywords": [
+    "Yanipel"
+  ],
+  "author": "Johan LEPINAY",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Yanipel/yanipel.github.io/issues"
+  },
+  "homepage": "https://github.com/Yanipel/yanipel.github.io#readme",
+  "dependencies": {
+    "aos": "^2.3.4",
+    "bootstrap": "^5.1.3",
+    "chartjs": "^0.3.24",
+    "jquery": "^3.6.0",
+    "rellax": "^1.12.1",
+    "sqlite": "^4.0.23",
+    "swiper": "^7.3.3",
+    "typed": "^2.0.0-alpha.0",
+    "typedjs": "^0.2.2"
+  }
+}
