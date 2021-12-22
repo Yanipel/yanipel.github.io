@@ -13,6 +13,18 @@ window.addEventListener('scroll', function () {
     lastScrollTop = scrollTop;
 });
 
+// Anime js
+var lineDrawing = anime({
+    targets: '#lineDrawing .lines path',
+    strokeDashoffset: [anime.setDashoffset, 0],
+    easing: 'easeInOutSine',
+    duration: 15000,
+    delay: function (el, i) { return i * 250 },
+    direction: 'alternate',
+    loop: true
+});
+
+// Swiper js
 var swiper = new Swiper('.swiper-container', {
     loop: true,
     autoplay: {

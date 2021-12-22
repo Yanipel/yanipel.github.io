@@ -57,9 +57,9 @@ p {
     font-size: 1.2rem;
 }
 img {
-    width: 100px;
-    position: absolute;
-    z-index: 2;
+    width: 200px;
+    /* position: absolute;
+    z-index: 2; */
 }
 video {
   width: 100%;
@@ -80,7 +80,7 @@ video {
     padding-top: 20px;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: space-evenly;
 }
 .nav-item {
     color: papayawhip;
@@ -89,14 +89,22 @@ video {
 }
 /* --------------------- Footer ------------------------- */
 .button {
-    margin-top: 150px;
+    padding: 400px 0 0 0;
+    margin: auto;
+    width: 100%;
     z-index: 2;
+    display: flex;
+    justify-content: center;
+    position: absolute;
 
 }
 .button a {
     padding: 20px 80px;
     border: 1px solid #b3aca7;
     width: 300px;
+    background-color: peru;
+    color: red;
+ 
 }
 .button:hover a {
     background: #b3aca7;
@@ -194,6 +202,8 @@ input:hover::placeholder, textarea:hover::placeholder, input:hover:focus::placeh
     padding: 50px;
     box-shadow: 0 0 5px green;
 }
+/* --------------------------------- Arrow -------------------------------- */
+
 .arrow {
     /* width: 50%; */
     margin: -20 auto;
@@ -241,10 +251,7 @@ footer p {
 .footer-menu-item {
     width: 25%;
 }
-
-
-
-
+/* --------------------------------- Swiper js -------------------------------- */
 .swiper-container {
   width: 100%;
   height: 100%;
@@ -283,3 +290,4 @@ footer p {
   color:#fff;
   background: orange;
 }
+/* --------------------------------- Anime js -------------------------------- */
