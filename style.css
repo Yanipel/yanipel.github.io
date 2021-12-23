@@ -46,7 +46,7 @@ a:hover {
     font-size: xx-large;
     text-decoration: none;
 }
-p {
+header p {
     position: absolute;
     z-index: 2;
     margin: 500px 200px;
@@ -87,7 +87,7 @@ video {
     font-size: 1.5rem;
     font-family: 'Roboto', sans-serif;
 }
-/* --------------------- Footer ------------------------- */
+/* --------------------- Button ------------------------- */
 .button {
     padding: 400px 0 0 0;
     margin: auto;
@@ -112,6 +112,47 @@ video {
     transition: all 0.3s ease-in-out;
     text-decoration: none;
 }
+/* --------------------------------- Token -------------------------------- */
+.token {
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: wrap;
+    justify-content: flex-start;
+}
+h3 {
+    font-size: 3rem;
+    font-family: 'Montserrat', sans-serif;
+    padding: 5% 15% 5% 40%;
+    align-items: center;
+}
+
+.token p {
+    width: 50%;
+}
+.token img {
+    width: 50%;
+}   
+
+/* --------------------------------- Token -------------------------------- */
+
+.projet {
+    height: 100vh;
+    width: 100%;
+}
+/* --------------------------------- Token -------------------------------- */
+
+.animejs{
+    height: 100vh;
+    width: 100%;
+}
+/* --------------------------------- Token -------------------------------- */
+
+.contact{
+    height: 100vh;
+    width: 100%;
+}
+
 /* --------------------------------- Footer -------------------------------- */
 footer {
     background: url(./assets/media/video-19.mp4) 50% 0% no-repeat fixed;
