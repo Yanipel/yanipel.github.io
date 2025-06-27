@@ -341,3 +341,19 @@ footer p {
 .portfolio li {
     margin-bottom: 1rem;
 }
+
+main.portfolio {
+    margin-top: 120px;
+    padding: 2rem 5%;
+    font-family: 'Rambla', sans-serif;
+}
+
+main.portfolio h1 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.portfolio-footer {
+    text-align: center;
+    padding: 40px;
+}
