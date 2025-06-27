@@ -332,3 +332,12 @@ footer p {
   background: orange;
 }
 /* --------------------------------- Anime js -------------------------------- */
+
+/* ----------------------------- Portfolio page ------------------------------ */
+.portfolio ul {
+    list-style-type: disc;
+    margin-left: 2rem;
+}
+.portfolio li {
+    margin-bottom: 1rem;
+}
