@@ -26,6 +26,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardDescription, CardTitle } from '@/components/ui/card'
 import heroAiVideo from '@/assets/hero-ai-first-bg.mp4'
 import yanipelLogo from '@/assets/yanipel-logo-officiel-2023.png'
+import yanipelLogoDark from '@/assets/yanipel-logo-officiel-2023-dark.png'
 
 const navItems = [
   { label: 'Offres', href: '#offres' },
@@ -190,6 +191,7 @@ function App() {
   const [theme, setTheme] = useState<'light' | 'dark'>('light')
   const webhookUrl = import.meta.env.VITE_N8N_WEBHOOK_URL as string | undefined
   const whatsappNumber = (import.meta.env.VITE_WHATSAPP_NUMBER as string | undefined) ?? '262000000000'
+  const activeLogo = theme === 'dark' ? yanipelLogoDark : yanipelLogo
 
   useEffect(() => {
     const root = document.documentElement
@@ -268,7 +270,7 @@ function App() {
       <header className="sticky top-0 z-40 border-b border-border/60 bg-background/90 backdrop-blur">
         <div className="section-shell flex h-16 items-center justify-between">
           <a href="#top" className="flex items-center">
-            <img src={yanipelLogo} alt="Yanipel logo officiel" className="h-10 w-auto object-contain" />
+            <img src={activeLogo} alt="Yanipel logo officiel" className="h-10 w-auto object-contain" />
           </a>
           <nav className="hidden items-center gap-6 md:flex">
             {navItems.map((item) => (
@@ -305,7 +307,7 @@ function App() {
             muted
             playsInline
             preload="metadata"
-            poster={yanipelLogo}
+            poster={activeLogo}
             aria-hidden="true"
           >
             <source src={heroAiVideo} type="video/mp4" />
