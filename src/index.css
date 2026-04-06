@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Manrope:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color: #1b1a17;
+  background-color: #f7f3ea;
+  font-family: 'Manrope', sans-serif;
+}
+
+* {
+  border-color: rgb(217 204 184 / 1);
+}
+
+html,
+body,
+#root {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  background:
+    radial-gradient(circle at 85% 12%, rgba(249, 115, 22, 0.2) 0, rgba(249, 115, 22, 0) 32%),
+    radial-gradient(circle at 6% 4%, rgba(13, 76, 73, 0.18) 0, rgba(13, 76, 73, 0) 34%),
+    #f7f3ea;
+  color: #1b1a17;
+}
+
+::selection {
+  background: rgba(13, 76, 73, 0.2);
+}
+
+.headline-font {
+  font-family: 'Bricolage Grotesque', sans-serif;
+}
+
+.hero-grid {
+  background-image:
+    linear-gradient(rgba(13, 76, 73, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(13, 76, 73, 0.06) 1px, transparent 1px);
+  background-size: 42px 42px;
+}
+
+.noise-layer::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(rgba(0, 0, 0, 0.04) 0.8px, transparent 0.8px);
+  background-size: 5px 5px;
+  pointer-events: none;
+  opacity: 0.25;
+}
+
+.section-shell {
+  @apply mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-10;
+}

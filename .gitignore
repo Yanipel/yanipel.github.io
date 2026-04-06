@@ -21,3 +21,11 @@ node_modules/
 
 # parcel-bundler cache (https://parceljs.org/)
 .cache
+
+# Build outputs
+dist/
+*.tsbuildinfo
+tailwind.config.js
+tailwind.config.d.ts
+vite.config.js
+vite.config.d.ts
