@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Yanipel, agence web AI-first à La Réunion. Sites vitrines et e-commerce livrés ultra rapidement avec IA, paiement et fidélisation YaniPay."
+    />
+    <title>Yanipel | Agence Web AI-first à La Réunion</title>
+    <script>
+      ;(() => {
+        const host = window.location.hostname
+        const isLocal = host === 'localhost' || host === '127.0.0.1'
+        const alreadyInDocs = window.location.pathname.startsWith('/docs/')
+        const hasSourceEntry = Boolean(document.querySelector('script[src="/src/main.tsx"]'))
+        if (!isLocal && !alreadyInDocs && hasSourceEntry) {
+          window.location.replace('/docs/')
+        }
+      })()
+    </script>
+    <script type="module" crossorigin src="./assets/index-Dq7LKw-M.js"></script>
+    <link rel="stylesheet" crossorigin href="./assets/index-5RnZ7M1B.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>

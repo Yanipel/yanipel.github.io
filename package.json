@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit -p tsconfig.app.json && tsc --noEmit -p tsconfig.node.json && vite build",
+    "build:docs": "npm run build && rm -rf docs && mkdir -p docs && cp -R dist/. docs/",
     "preview": "vite preview"
   },
   "dependencies": {
