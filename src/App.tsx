@@ -4,6 +4,7 @@ import type { FormEvent } from 'react'
 import {
   ArrowRight,
   Bot,
+  BriefcaseBusiness,
   Brain,
   Check,
   CircleDot,
@@ -19,6 +20,7 @@ import {
   Store,
   Sun,
   Utensils,
+  Users,
 } from 'lucide-react'
 
 import { Badge } from '@/components/ui/badge'
@@ -56,6 +58,21 @@ const sectors = [
     icon: Globe,
     title: 'Vente en ligne',
     text: 'Tunnel de vente optimisé, paiement en ligne, relance panier et programme fidélité connecté à YaniPay.',
+  },
+  {
+    icon: Rocket,
+    title: 'Startups',
+    text: 'Landing pages produit, MVP web et parcours d’acquisition conçus pour tester, apprendre et scaler vite.',
+  },
+  {
+    icon: BriefcaseBusiness,
+    title: 'Freelances',
+    text: 'Site portfolio orienté conversion, prise de rendez-vous automatisée et tunnel clair pour signer plus de missions.',
+  },
+  {
+    icon: Users,
+    title: 'Associations',
+    text: 'Pages de présentation, collecte de dons, formulaires bénévoles et communication digitale pour mobiliser votre communauté.',
   },
 ]
 
@@ -152,22 +169,28 @@ const faq = [
 type InstitutionalPartner = {
   name: string
   sigle: string
+  domain?: string
   logoSrc?: string
 }
 
 const institutionalPartners: InstitutionalPartner[] = [
-  { name: 'Europe', sigle: 'EU', logoSrc: partnerEuropeLogo },
-  { name: 'France Gouvernement', sigle: 'FR', logoSrc: partnerFranceLogo },
-  { name: 'La Région Réunion', sigle: '974', logoSrc: partnerRegionReunionLogo },
-  { name: 'La French Tech', sigle: 'FT', logoSrc: partnerFrenchTechLogo },
-  { name: 'Réunion Innovation', sigle: 'RI', logoSrc: partnerReunionInnovationLogo },
-  { name: 'Technopole La Réunion', sigle: 'TLR' },
-  { name: 'CCI Réunion', sigle: 'CCI' },
-  { name: 'CPME Réunion', sigle: 'CPME' },
-  { name: 'MEDEF Réunion', sigle: 'MEDEF' },
+  { name: 'Europe', sigle: 'EU', domain: 'europa.eu', logoSrc: partnerEuropeLogo },
+  { name: 'France Gouvernement', sigle: 'FR', domain: 'gouvernement.fr', logoSrc: partnerFranceLogo },
+  { name: 'La Région Réunion', sigle: '974', domain: 'regionreunion.com', logoSrc: partnerRegionReunionLogo },
+  { name: 'La French Tech', sigle: 'FT', domain: 'lafrenchtech.com', logoSrc: partnerFrenchTechLogo },
+  { name: 'Réunion Innovation', sigle: 'RI', domain: 'reunioninnovation.com', logoSrc: partnerReunionInnovationLogo },
+  { name: 'Technopole La Réunion', sigle: 'TLR', domain: 'technopole-reunion.com' },
+  { name: 'CCI Réunion', sigle: 'CCI', domain: 'cci.fr' },
+  { name: 'CPME Réunion', sigle: 'CPME', domain: 'cpme.fr' },
+  { name: 'MEDEF Réunion', sigle: 'MEDEF', domain: 'medef.fr' },
 ]
 
 const marqueePartners = [...institutionalPartners, ...institutionalPartners]
+
+const buildBrandfetchIconUrl = (domain: string, clientId?: string) => {
+  if (!clientId) return undefined
+  return `https://cdn.brandfetch.io/${domain}/w/240/h/240/icon?c=${encodeURIComponent(clientId)}`
+}
 
 type LeadFormData = {
   fullName: string
@@ -202,9 +225,11 @@ function App() {
   const [submitState, setSubmitState] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [submitMessage, setSubmitMessage] = useState('')
   const [theme, setTheme] = useState<'light' | 'dark'>('light')
+  const [failedBrandfetchDomains, setFailedBrandfetchDomains] = useState<Record<string, boolean>>({})
   const reduceMotion = useReducedMotion()
   const webhookUrl = import.meta.env.VITE_N8N_WEBHOOK_URL as string | undefined
   const whatsappNumber = (import.meta.env.VITE_WHATSAPP_NUMBER as string | undefined) ?? '262000000000'
+  const brandfetchClientId = import.meta.env.VITE_BRANDFETCH_CLIENT_ID as string | undefined
   const activeLogo = theme === 'dark' ? yanipelLogoDark : yanipelLogo
 
   useEffect(() => {
@@ -234,6 +259,20 @@ function App() {
 
   const toggleTheme = () => {
     setTheme((previousTheme) => (previousTheme === 'dark' ? 'light' : 'dark'))
+  }
+
+  const getPartnerLogoSrc = (partner: InstitutionalPartner) => {
+    if (partner.domain && !failedBrandfetchDomains[partner.domain]) {
+      const brandfetchLogo = buildBrandfetchIconUrl(partner.domain, brandfetchClientId)
+      if (brandfetchLogo) return brandfetchLogo
+    }
+    return partner.logoSrc
+  }
+
+  const markPartnerDomainAsFailed = (partner: InstitutionalPartner) => {
+    const domain = partner.domain
+    if (!domain) return
+    setFailedBrandfetchDomains((previous) => (previous[domain] ? previous : { ...previous, [domain]: true }))
   }
 
   const handleLeadSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -313,6 +352,28 @@ function App() {
       </header>
 
       <main id="top">
+        <section className="section-shell section-anchor pt-5" id="banniere">
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="relative overflow-hidden rounded-2xl border border-primary/35 bg-gradient-to-r from-primary/20 via-background to-accent/20 px-4 py-3 sm:px-6"
+          >
+            <div className="pointer-events-none absolute -left-16 top-1/2 h-24 w-24 -translate-y-1/2 rounded-full bg-primary/20 blur-2xl" />
+            <div className="pointer-events-none absolute -right-16 top-1/2 h-24 w-24 -translate-y-1/2 rounded-full bg-accent/20 blur-2xl" />
+            <div className="relative flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
+              <p className="text-sm font-semibold text-foreground/85">
+                Votre site internet <span className="text-primary">100x plus rapidement</span> qu&apos;avant.
+              </p>
+              <Button asChild size="sm">
+                <a href="#contact">
+                  Lancer mon projet <ArrowRight className="size-4" />
+                </a>
+              </Button>
+            </div>
+          </motion.div>
+        </section>
+
         <section className="hero-grid relative isolate overflow-hidden min-h-[calc(100svh-4rem)]">
           <video
             className="absolute inset-0 block h-full w-full object-cover object-center"
@@ -342,11 +403,11 @@ function App() {
             className="pointer-events-none absolute -right-20 top-8 h-72 w-72 rounded-full bg-accent/30 blur-3xl"
           />
 
-          <div className="section-shell relative z-10 flex min-h-[calc(100svh-4rem)] items-end py-16 sm:py-24">
-            <motion.div initial="hidden" animate="show" className="max-w-4xl">
+          <div className="section-shell relative z-10 flex min-h-[calc(100svh-4rem)] items-center py-16 sm:py-20">
+            <motion.div initial="hidden" animate="show" className="mx-auto max-w-4xl text-center">
               <motion.div custom={0} variants={fadeUp}>
                 <Badge variant="accent" className="mb-5 border-white/35 bg-white/10 text-white">
-                  Agence web AI-first à La Réunion · Vidéo immersive
+                  Agence web AI-first à La Réunion
                 </Badge>
               </motion.div>
               <motion.h1
@@ -358,11 +419,11 @@ function App() {
                 <span className="text-emerald-300"> 100x plus rapidement </span>
                 qu&apos;avant.
               </motion.h1>
-              <motion.p custom={2} variants={fadeUp} className="mt-6 max-w-2xl text-lg leading-relaxed text-white/85">
+              <motion.p custom={2} variants={fadeUp} className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-white/85">
                 Yanipel conçoit et lance des expériences web performantes pour particuliers, entrepreneurs et professionnels locaux. En partenariat avec YaniPay,
                 nous relions création, paiement, fidélisation et automatisation IA dans une seule exécution.
               </motion.p>
-              <motion.div custom={3} variants={fadeUp} className="mt-8 flex flex-wrap items-center gap-3">
+              <motion.div custom={3} variants={fadeUp} className="mt-8 flex flex-wrap items-center justify-center gap-3">
                 <Button asChild size="lg">
                   <a href="#offres">
                     Voir les tarifs <ArrowRight className="size-4" />
@@ -372,7 +433,7 @@ function App() {
                   <a href="#methode">Découvrir la méthode</a>
                 </Button>
               </motion.div>
-              <motion.div custom={4} variants={fadeUp} className="mt-10 grid gap-3 sm:grid-cols-3">
+              <motion.div custom={4} variants={fadeUp} className="mx-auto mt-10 grid max-w-3xl gap-3 sm:grid-cols-3">
                 {['Offres transparentes', 'Workflow AI + n8n', 'Stack React moderne'].map((item) => (
                   <div key={item} className="rounded-full border border-white/35 bg-white/10 px-4 py-2 text-center text-sm font-medium text-white/90 backdrop-blur">
                     {item}
@@ -383,7 +444,7 @@ function App() {
           </div>
         </section>
 
-        <section className="section-shell -mt-6 pb-10 sm:-mt-10" id="aides">
+        <section className="section-shell section-anchor section-fade py-14 md:py-16" id="aides">
           <motion.div initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} custom={0} variants={fadeUp}>
             <div className="relative overflow-hidden rounded-3xl border border-primary/30 bg-gradient-to-br from-primary/15 via-background to-accent/10 p-6 shadow-[0_18px_70px_-35px_rgba(16,185,129,0.75)] sm:p-8 lg:p-10">
               <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-primary/20 blur-3xl" />
@@ -424,7 +485,7 @@ function App() {
           </motion.div>
         </section>
 
-        <section className="section-shell pb-8" id="secteurs">
+        <section className="section-shell section-anchor section-fade py-14 md:py-16" id="secteurs">
           <motion.div initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }}>
             <motion.div custom={0} variants={fadeUp} className="mb-8 flex items-center justify-between">
               <div>
@@ -435,7 +496,7 @@ function App() {
             <div className="grid gap-5 md:grid-cols-3">
               {sectors.map((sector, index) => (
                 <motion.div key={sector.title} custom={index + 1} variants={fadeUp}>
-                  <Card className="h-full">
+                  <Card className="h-full card-interactive">
                     <sector.icon className="mb-4 size-8 text-primary" />
                     <CardTitle>{sector.title}</CardTitle>
                     <CardDescription className="mt-3">{sector.text}</CardDescription>
@@ -446,7 +507,7 @@ function App() {
           </motion.div>
         </section>
 
-        <section className="section-shell py-14">
+        <section className="section-shell section-anchor section-fade py-14 md:py-16">
           <motion.div initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }}>
             <motion.div custom={0} variants={fadeUp} className="mb-8 max-w-2xl">
               <Badge className="mb-3">Positionnement</Badge>
@@ -457,7 +518,7 @@ function App() {
             <div className="grid gap-5 md:grid-cols-2">
               {pillars.map((pillar, index) => (
                 <motion.div key={pillar.title} custom={index + 1} variants={fadeUp}>
-                  <Card className="h-full">
+                  <Card className="h-full card-interactive">
                     <div className="mb-3 inline-flex rounded-2xl bg-primary/10 p-3">
                       <pillar.icon className="size-5 text-primary" />
                     </div>
@@ -470,7 +531,7 @@ function App() {
           </motion.div>
         </section>
 
-        <section id="methode" className="section-shell py-14">
+        <section id="methode" className="section-shell section-anchor section-fade py-14 md:py-16">
           <motion.div
             initial="hidden"
             whileInView="show"
@@ -485,7 +546,7 @@ function App() {
             </motion.div>
             <div className="grid gap-4 md:grid-cols-4">
               {processSteps.map((step, index) => (
-                <motion.div key={step.title} custom={index + 1} variants={fadeUp} className="rounded-2xl border border-white/25 bg-white/10 p-5">
+                <motion.div key={step.title} custom={index + 1} variants={fadeUp} className="rounded-2xl border border-white/25 bg-white/10 p-5 card-interactive">
                   <p className="mb-2 inline-flex rounded-full border border-white/40 px-2 py-1 text-xs font-bold tracking-wide">Étape {index + 1}</p>
                   <h3 className="headline-font text-xl font-bold">{step.title}</h3>
                   <p className="mt-2 text-sm leading-relaxed text-background/85">{step.text}</p>
@@ -495,10 +556,10 @@ function App() {
           </motion.div>
         </section>
 
-        <section id="yani" className="section-shell py-14">
+        <section id="yani" className="section-shell section-anchor section-fade py-14 md:py-16">
           <motion.div initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} className="grid gap-5 lg:grid-cols-[1.15fr_0.85fr]">
             <motion.div custom={0} variants={fadeUp}>
-              <Card className="h-full bg-gradient-to-br from-accent/15 via-white to-primary/5">
+              <Card className="h-full bg-gradient-to-br from-accent/15 via-white to-primary/5 card-interactive">
                 <Badge variant="accent" className="mb-4">
                   Agent autonome Y.A.N.I.
                 </Badge>
@@ -517,12 +578,12 @@ function App() {
               </Card>
             </motion.div>
             <motion.div custom={1} variants={fadeUp} className="grid gap-5">
-              <Card>
+              <Card className="card-interactive">
                 <p className="mb-3 text-sm font-semibold uppercase tracking-[0.14em] text-foreground/50">Partenariat YaniPay</p>
                 <h3 className="headline-font text-2xl font-bold">Banque, paiement et fidélisation dans le même parcours</h3>
                 <p className="mt-3 text-sm leading-relaxed text-foreground/75">Plus besoin d'assembler plusieurs outils. Yanipel + YaniPay unifient l'encaissement et la rétention client.</p>
               </Card>
-              <Card>
+              <Card className="card-interactive">
                 <p className="mb-3 text-sm font-semibold uppercase tracking-[0.14em] text-foreground/50">Résultats visés</p>
                 <ul className="space-y-2 text-sm text-foreground/80">
                   <li className="flex items-center gap-2"><CircleDot className="size-4 text-accent" />Go-live plus rapide</li>
@@ -534,7 +595,7 @@ function App() {
           </motion.div>
         </section>
 
-        <section id="offres" className="section-shell py-14">
+        <section id="offres" className="section-shell section-anchor section-fade py-14 md:py-16">
           <motion.div initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }}>
             <motion.div custom={0} variants={fadeUp} className="mb-8 text-center">
               <Badge className="mb-3">Tarifs simples</Badge>
@@ -543,7 +604,7 @@ function App() {
             <div className="grid gap-5 lg:grid-cols-3">
               {pricing.map((offer, index) => (
                 <motion.div key={offer.plan} custom={index + 1} variants={fadeUp}>
-                  <Card className={offer.highlight ? 'border-primary shadow-glow' : ''}>
+                  <Card className={`card-interactive ${offer.highlight ? 'border-primary shadow-glow' : ''}`}>
                     {offer.highlight && <Badge className="mb-4 bg-primary text-background">Le plus demandé</Badge>}
                     <CardTitle>{offer.plan}</CardTitle>
                     <p className="mt-4 headline-font text-4xl font-extrabold text-primary">{offer.price}</p>
@@ -569,7 +630,7 @@ function App() {
           </motion.div>
         </section>
 
-        <section className="section-shell py-14" id="faq">
+        <section className="section-shell section-anchor section-fade py-14 md:py-16" id="faq">
           <motion.div initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }}>
             <motion.div custom={0} variants={fadeUp} className="mb-8 max-w-2xl">
               <Badge className="mb-3">FAQ</Badge>
@@ -578,7 +639,7 @@ function App() {
             <div className="grid gap-4 md:grid-cols-2">
               {faq.map((item, index) => (
                 <motion.div key={item.q} custom={index + 1} variants={fadeUp}>
-                  <Card className="h-full">
+                  <Card className="h-full card-interactive">
                     <h3 className="headline-font text-xl font-bold">{item.q}</h3>
                     <p className="mt-3 text-sm leading-relaxed text-foreground/75">{item.a}</p>
                   </Card>
@@ -588,13 +649,13 @@ function App() {
           </motion.div>
         </section>
 
-        <section id="contact" className="section-shell pb-16 pt-12">
+        <section id="contact" className="section-shell section-anchor section-fade py-14 md:py-16">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.4 }}
             transition={{ duration: 0.6 }}
-            className="rounded-[2rem] border border-border bg-gradient-to-br from-white via-muted/40 to-accent/10 p-8 sm:p-10"
+            className="rounded-[2rem] border border-border bg-gradient-to-br from-white via-muted/40 to-accent/10 p-8 sm:p-10 web-panel"
           >
             <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
               <div>
@@ -671,7 +732,7 @@ function App() {
                   { icon: Sparkles, label: 'Expérience premium' },
                   { icon: Layers, label: 'Évolutif par modules' },
                 ].map((item) => (
-                  <div key={item.label} className="flex items-center gap-3 rounded-2xl border border-border/70 bg-background/80 px-4 py-3">
+                  <div key={item.label} className="flex items-center gap-3 rounded-2xl border border-border/70 bg-background/80 px-4 py-3 card-interactive">
                     <item.icon className="size-5 text-primary" />
                     <span className="text-sm font-semibold text-foreground/80">{item.label}</span>
                   </div>
@@ -682,13 +743,16 @@ function App() {
         </section>
       </main>
 
-      <section className="border-y border-border/70 bg-muted/45">
+      <section className="border-y border-border/70 bg-muted/45 section-fade">
         <div className="section-shell flex min-h-[420px] flex-col justify-center py-14 md:min-h-[500px]">
           <div className="mx-auto max-w-4xl text-center">
             <Badge className="border border-primary/40 bg-primary/10 text-primary">Partenaires institutionnels</Badge>
             <h2 className="mt-5 headline-font text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
               Un écosystème solide pour accélérer votre croissance digitale à La Réunion
             </h2>
+            <p className="mt-3 text-xs font-medium uppercase tracking-[0.14em] text-foreground/55">
+              Icônes synchronisées via Brandfetch
+            </p>
           </div>
 
           <div className="relative mt-10 overflow-hidden">
@@ -710,19 +774,28 @@ function App() {
                     }
               }
             >
-              {marqueePartners.map((partner, index) => (
-                <div
-                  key={`${partner.name}-${index}`}
-                  className="flex h-24 w-[184px] shrink-0 items-center justify-center rounded-2xl border border-border/70 bg-background/90 px-4 shadow-sm"
-                  aria-label={partner.name}
-                >
-                  {partner.logoSrc ? (
-                    <img src={partner.logoSrc} alt={partner.name} className="h-12 w-auto max-w-full object-contain" loading="lazy" />
-                  ) : (
-                    <span className="text-lg font-extrabold uppercase tracking-[0.08em] text-primary">{partner.sigle}</span>
-                  )}
-                </div>
-              ))}
+              {marqueePartners.map((partner, index) => {
+                const partnerLogoSrc = getPartnerLogoSrc(partner)
+                return (
+                  <div
+                    key={`${partner.name}-${index}`}
+                    className="flex h-28 w-[208px] shrink-0 items-center justify-center rounded-2xl border border-border/70 bg-background/90 px-4 shadow-sm card-interactive"
+                    aria-label={partner.name}
+                  >
+                    {partnerLogoSrc ? (
+                      <img
+                        src={partnerLogoSrc}
+                        alt={partner.name}
+                        className="h-[60px] w-auto max-w-full object-contain"
+                        loading="lazy"
+                        onError={() => markPartnerDomainAsFailed(partner)}
+                      />
+                    ) : (
+                      <span className="text-lg font-extrabold uppercase tracking-[0.08em] text-primary">{partner.sigle}</span>
+                    )}
+                  </div>
+                )
+              })}
             </motion.div>
           </div>
         </div>

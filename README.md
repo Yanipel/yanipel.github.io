@@ -19,6 +19,7 @@ cp .env.example .env
 3. Configurer:
 - `VITE_N8N_WEBHOOK_URL`: URL webhook n8n qui reçoit les leads du formulaire.
 - `VITE_WHATSAPP_NUMBER`: numéro WhatsApp au format international sans `+`.
+- `VITE_BRANDFETCH_CLIENT_ID`: client id Brandfetch pour afficher les icônes partenaires via `cdn.brandfetch.io`.
 
 4. Lancer:
 
