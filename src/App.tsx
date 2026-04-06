@@ -27,6 +27,11 @@ import { Card, CardDescription, CardTitle } from '@/components/ui/card'
 import heroAiVideo from '@/assets/hero-ai-first-bg.mp4'
 import yanipelLogo from '@/assets/yanipel-logo-officiel-2023.png'
 import yanipelLogoDark from '@/assets/yanipel-logo-officiel-2023-dark.png'
+import partnerEuropeLogo from '@/assets/partners/europe.jpg'
+import partnerFranceLogo from '@/assets/partners/france-gouv.svg'
+import partnerRegionReunionLogo from '@/assets/partners/region-reunion.jpg'
+import partnerFrenchTechLogo from '@/assets/partners/la-french-tech.png'
+import partnerReunionInnovationLogo from '@/assets/partners/reunion-innovation.png'
 
 const navItems = [
   { label: 'Offres', href: '#offres' },
@@ -144,12 +149,18 @@ const faq = [
   },
 ]
 
-const institutionalPartners = [
-  { name: 'Europe', sigle: 'EU' },
-  { name: 'France Gouvernement', sigle: 'FR' },
-  { name: 'La Région Réunion', sigle: '974' },
-  { name: 'La French Tech', sigle: 'FT' },
-  { name: 'Réunion Innovation', sigle: 'RI' },
+type InstitutionalPartner = {
+  name: string
+  sigle: string
+  logoSrc?: string
+}
+
+const institutionalPartners: InstitutionalPartner[] = [
+  { name: 'Europe', sigle: 'EU', logoSrc: partnerEuropeLogo },
+  { name: 'France Gouvernement', sigle: 'FR', logoSrc: partnerFranceLogo },
+  { name: 'La Région Réunion', sigle: '974', logoSrc: partnerRegionReunionLogo },
+  { name: 'La French Tech', sigle: 'FT', logoSrc: partnerFrenchTechLogo },
+  { name: 'Réunion Innovation', sigle: 'RI', logoSrc: partnerReunionInnovationLogo },
   { name: 'Technopole La Réunion', sigle: 'TLR' },
   { name: 'CCI Réunion', sigle: 'CCI' },
   { name: 'CPME Réunion', sigle: 'CPME' },
@@ -639,8 +650,12 @@ function App() {
                 className="flex min-h-16 items-center gap-3 rounded-2xl border border-border/70 bg-background/80 px-3 py-2 shadow-sm"
                 aria-label={partner.name}
               >
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary/15 text-[10px] font-bold uppercase tracking-[0.06em] text-primary">
-                  {partner.sigle}
+                <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-border/60 bg-background">
+                  {partner.logoSrc ? (
+                    <img src={partner.logoSrc} alt={partner.name} className="h-full w-full object-contain p-1" loading="lazy" />
+                  ) : (
+                    <span className="text-[10px] font-bold uppercase tracking-[0.06em] text-primary">{partner.sigle}</span>
+                  )}
                 </div>
                 <p className="text-xs font-semibold leading-snug text-foreground/80">{partner.name}</p>
               </div>
