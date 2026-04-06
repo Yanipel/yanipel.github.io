@@ -1,4 +1,4 @@
-import { motion } from 'framer-motion'
+import { motion, useReducedMotion } from 'framer-motion'
 import { useEffect, useMemo, useState } from 'react'
 import type { FormEvent } from 'react'
 import {
@@ -167,6 +167,8 @@ const institutionalPartners: InstitutionalPartner[] = [
   { name: 'MEDEF Réunion', sigle: 'MEDEF' },
 ]
 
+const marqueePartners = [...institutionalPartners, ...institutionalPartners]
+
 type LeadFormData = {
   fullName: string
   email: string
@@ -200,6 +202,7 @@ function App() {
   const [submitState, setSubmitState] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [submitMessage, setSubmitMessage] = useState('')
   const [theme, setTheme] = useState<'light' | 'dark'>('light')
+  const reduceMotion = useReducedMotion()
   const webhookUrl = import.meta.env.VITE_N8N_WEBHOOK_URL as string | undefined
   const whatsappNumber = (import.meta.env.VITE_WHATSAPP_NUMBER as string | undefined) ?? '262000000000'
   const activeLogo = theme === 'dark' ? yanipelLogoDark : yanipelLogo
@@ -378,6 +381,47 @@ function App() {
               </motion.div>
             </motion.div>
           </div>
+        </section>
+
+        <section className="section-shell -mt-6 pb-10 sm:-mt-10" id="aides">
+          <motion.div initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} custom={0} variants={fadeUp}>
+            <div className="relative overflow-hidden rounded-3xl border border-primary/30 bg-gradient-to-br from-primary/15 via-background to-accent/10 p-6 shadow-[0_18px_70px_-35px_rgba(16,185,129,0.75)] sm:p-8 lg:p-10">
+              <div className="pointer-events-none absolute -right-20 -top-20 h-56 w-56 rounded-full bg-primary/20 blur-3xl" />
+              <div className="pointer-events-none absolute -bottom-20 left-12 h-52 w-52 rounded-full bg-accent/20 blur-3xl" />
+
+              <div className="relative grid gap-8 lg:grid-cols-[1fr_auto] lg:items-center">
+                <div className="max-w-3xl">
+                  <Badge className="border border-primary/45 bg-primary/10 text-primary">Aide Région Réunion</Badge>
+                  <h2 className="mt-4 headline-font text-2xl font-extrabold leading-tight tracking-tight text-foreground sm:text-3xl lg:text-4xl">
+                    Développez votre business avec plus de clients grâce à un site web ou une app mobile partiellement financés.
+                  </h2>
+                  <p className="mt-4 max-w-2xl text-sm leading-relaxed text-foreground/80 sm:text-base">
+                    Yanipel vous accompagne pour activer les dispositifs d&apos;aide disponibles à La Réunion: votre projet digital devient plus accessible, plus rapide à lancer, et
+                    plus rentable pour votre activité.
+                  </p>
+                  <div className="mt-5 flex flex-wrap gap-2 text-xs font-semibold sm:text-sm">
+                    <span className="rounded-full border border-border/70 bg-background/75 px-3 py-1.5">Site internet vitrine ou e-commerce</span>
+                    <span className="rounded-full border border-border/70 bg-background/75 px-3 py-1.5">Application mobile métier</span>
+                    <span className="rounded-full border border-border/70 bg-background/75 px-3 py-1.5">Financement partiel possible</span>
+                  </div>
+                </div>
+
+                <div className="flex flex-col gap-3 lg:items-end">
+                  <Button asChild size="lg" className="min-w-[240px]">
+                    <a href="#contact">
+                      Vérifier mon éligibilité <ArrowRight className="size-4" />
+                    </a>
+                  </Button>
+                  <Button asChild variant="secondary" size="lg" className="min-w-[240px]">
+                    <a href="#offres">Voir les offres Yanipel</a>
+                  </Button>
+                  <p className="max-w-[280px] text-xs text-foreground/65 lg:text-right">
+                    *Sous réserve des critères en vigueur et des enveloppes disponibles.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
         </section>
 
         <section className="section-shell pb-8" id="secteurs">
@@ -638,28 +682,48 @@ function App() {
         </section>
       </main>
 
-      <section className="border-y border-border/70 bg-muted/45 py-8">
-        <div className="section-shell">
-          <p className="mb-4 text-center text-xs font-semibold uppercase tracking-[0.18em] text-foreground/70">
-            Écosystème institutionnel & innovation
-          </p>
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-9">
-            {institutionalPartners.map((partner) => (
-              <div
-                key={partner.name}
-                className="flex min-h-16 items-center gap-3 rounded-2xl border border-border/70 bg-background/80 px-3 py-2 shadow-sm"
-                aria-label={partner.name}
-              >
-                <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl border border-border/60 bg-background">
+      <section className="border-y border-border/70 bg-muted/45">
+        <div className="section-shell flex min-h-[420px] flex-col justify-center py-14 md:min-h-[500px]">
+          <div className="mx-auto max-w-4xl text-center">
+            <Badge className="border border-primary/40 bg-primary/10 text-primary">Partenaires institutionnels</Badge>
+            <h2 className="mt-5 headline-font text-3xl font-extrabold tracking-tight text-foreground sm:text-4xl lg:text-5xl">
+              Un écosystème solide pour accélérer votre croissance digitale à La Réunion
+            </h2>
+          </div>
+
+          <div className="relative mt-10 overflow-hidden">
+            <div className="pointer-events-none absolute inset-y-0 left-0 z-10 w-16 bg-gradient-to-r from-muted/90 to-transparent" />
+            <div className="pointer-events-none absolute inset-y-0 right-0 z-10 w-16 bg-gradient-to-l from-muted/90 to-transparent" />
+
+            <motion.div
+              className="flex w-max gap-4"
+              animate={reduceMotion ? undefined : { x: ['0%', '-50%'] }}
+              transition={
+                reduceMotion
+                  ? undefined
+                  : {
+                      x: {
+                        duration: 28,
+                        repeat: Number.POSITIVE_INFINITY,
+                        ease: 'linear',
+                      },
+                    }
+              }
+            >
+              {marqueePartners.map((partner, index) => (
+                <div
+                  key={`${partner.name}-${index}`}
+                  className="flex h-24 w-[184px] shrink-0 items-center justify-center rounded-2xl border border-border/70 bg-background/90 px-4 shadow-sm"
+                  aria-label={partner.name}
+                >
                   {partner.logoSrc ? (
-                    <img src={partner.logoSrc} alt={partner.name} className="h-full w-full object-contain p-1" loading="lazy" />
+                    <img src={partner.logoSrc} alt={partner.name} className="h-12 w-auto max-w-full object-contain" loading="lazy" />
                   ) : (
-                    <span className="text-[10px] font-bold uppercase tracking-[0.06em] text-primary">{partner.sigle}</span>
+                    <span className="text-lg font-extrabold uppercase tracking-[0.08em] text-primary">{partner.sigle}</span>
                   )}
                 </div>
-                <p className="text-xs font-semibold leading-snug text-foreground/80">{partner.name}</p>
-              </div>
-            ))}
+              ))}
+            </motion.div>
           </div>
         </div>
       </section>
