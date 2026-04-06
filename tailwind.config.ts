@@ -1,19 +1,20 @@
 import type { Config } from 'tailwindcss'
 
 const config: Config = {
+  darkMode: 'class',
   content: ['./index.html', './src/**/*.{ts,tsx}'],
   theme: {
     extend: {
       colors: {
-        background: '#F7F3EA',
-        foreground: '#1B1A17',
-        primary: '#0D4C49',
-        accent: '#F97316',
-        muted: '#E8DFCF',
-        border: '#D9CCB8',
+        background: 'rgb(var(--color-background) / <alpha-value>)',
+        foreground: 'rgb(var(--color-foreground) / <alpha-value>)',
+        primary: 'rgb(var(--color-primary) / <alpha-value>)',
+        accent: 'rgb(var(--color-accent) / <alpha-value>)',
+        muted: 'rgb(var(--color-muted) / <alpha-value>)',
+        border: 'rgb(var(--color-border) / <alpha-value>)',
       },
       boxShadow: {
-        glow: '0 20px 45px rgba(13, 76, 73, 0.24)',
+        glow: '0 20px 45px rgb(var(--color-primary) / 0.24)',
       },
       borderRadius: {
         xl2: '1.25rem',

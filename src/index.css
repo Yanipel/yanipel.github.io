@@ -5,13 +5,28 @@
 @tailwind utilities;
 
 :root {
-  color: #1b1a17;
-  background-color: #f7f3ea;
+  --color-background: 247 243 234;
+  --color-foreground: 27 26 23;
+  --color-primary: 5 150 105;
+  --color-accent: 249 115 22;
+  --color-muted: 232 223 207;
+  --color-border: 217 204 184;
+  color: rgb(var(--color-foreground));
+  background-color: rgb(var(--color-background));
   font-family: 'Manrope', sans-serif;
 }
 
+html.dark {
+  --color-background: 9 17 14;
+  --color-foreground: 236 247 242;
+  --color-primary: 16 185 129;
+  --color-accent: 251 146 60;
+  --color-muted: 20 34 28;
+  --color-border: 56 83 71;
+}
+
 * {
-  border-color: rgb(217 204 184 / 1);
+  border-color: rgb(var(--color-border) / 1);
 }
 
 html,
@@ -23,14 +38,14 @@ body,
 
 body {
   background:
-    radial-gradient(circle at 85% 12%, rgba(249, 115, 22, 0.2) 0, rgba(249, 115, 22, 0) 32%),
-    radial-gradient(circle at 6% 4%, rgba(13, 76, 73, 0.18) 0, rgba(13, 76, 73, 0) 34%),
-    #f7f3ea;
-  color: #1b1a17;
+    radial-gradient(circle at 85% 12%, rgb(var(--color-accent) / 0.2) 0, rgb(var(--color-accent) / 0) 32%),
+    radial-gradient(circle at 6% 4%, rgb(var(--color-primary) / 0.18) 0, rgb(var(--color-primary) / 0) 34%),
+    rgb(var(--color-background));
+  color: rgb(var(--color-foreground));
 }
 
 ::selection {
-  background: rgba(13, 76, 73, 0.2);
+  background: rgb(var(--color-primary) / 0.25);
 }
 
 .headline-font {
@@ -39,8 +54,8 @@ body {
 
 .hero-grid {
   background-image:
-    linear-gradient(rgba(13, 76, 73, 0.06) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(13, 76, 73, 0.06) 1px, transparent 1px);
+    linear-gradient(rgb(var(--color-primary) / 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgb(var(--color-primary) / 0.06) 1px, transparent 1px);
   background-size: 42px 42px;
 }
 

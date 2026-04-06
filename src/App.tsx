@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion'
-import { useMemo, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import type { FormEvent } from 'react'
 import {
   ArrowRight,
@@ -13,15 +13,19 @@ import {
   HandCoins,
   Layers,
   MessageCircle,
+  Moon,
   Rocket,
   Sparkles,
   Store,
+  Sun,
   Utensils,
 } from 'lucide-react'
 
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import { Card, CardDescription, CardTitle } from '@/components/ui/card'
+import heroAiVideo from '@/assets/hero-ai-first-bg.mp4'
+import yanipelLogo from '@/assets/yanipel-logo-officiel-2023.png'
 
 const navItems = [
   { label: 'Offres', href: '#offres' },
@@ -139,6 +143,18 @@ const faq = [
   },
 ]
 
+const institutionalPartners = [
+  { name: 'Europe', sigle: 'EU' },
+  { name: 'France Gouvernement', sigle: 'FR' },
+  { name: 'La Région Réunion', sigle: '974' },
+  { name: 'La French Tech', sigle: 'FT' },
+  { name: 'Réunion Innovation', sigle: 'RI' },
+  { name: 'Technopole La Réunion', sigle: 'TLR' },
+  { name: 'CCI Réunion', sigle: 'CCI' },
+  { name: 'CPME Réunion', sigle: 'CPME' },
+  { name: 'MEDEF Réunion', sigle: 'MEDEF' },
+]
+
 type LeadFormData = {
   fullName: string
   email: string
@@ -171,8 +187,24 @@ function App() {
   const [leadForm, setLeadForm] = useState<LeadFormData>(initialLeadForm)
   const [submitState, setSubmitState] = useState<'idle' | 'loading' | 'success' | 'error'>('idle')
   const [submitMessage, setSubmitMessage] = useState('')
+  const [theme, setTheme] = useState<'light' | 'dark'>('light')
   const webhookUrl = import.meta.env.VITE_N8N_WEBHOOK_URL as string | undefined
   const whatsappNumber = (import.meta.env.VITE_WHATSAPP_NUMBER as string | undefined) ?? '262000000000'
+
+  useEffect(() => {
+    const root = document.documentElement
+    const stored = window.localStorage.getItem('yanipel-theme')
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches
+    const initialTheme = stored === 'dark' || (!stored && prefersDark) ? 'dark' : 'light'
+    root.classList.toggle('dark', initialTheme === 'dark')
+    setTheme(initialTheme)
+  }, [])
+
+  useEffect(() => {
+    const root = document.documentElement
+    root.classList.toggle('dark', theme === 'dark')
+    window.localStorage.setItem('yanipel-theme', theme)
+  }, [theme])
 
   const whatsappHref = useMemo(() => {
     const cleanNumber = whatsappNumber.replace(/\D/g, '')
@@ -182,6 +214,10 @@ function App() {
 
   const handleFieldChange = (field: keyof LeadFormData, value: string) => {
     setLeadForm((prev) => ({ ...prev, [field]: value }))
+  }
+
+  const toggleTheme = () => {
+    setTheme((previousTheme) => (previousTheme === 'dark' ? 'light' : 'dark'))
   }
 
   const handleLeadSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -228,11 +264,11 @@ function App() {
   }
 
   return (
-    <div className="relative overflow-x-clip text-foreground noise-layer">
+    <div className="relative overflow-x-clip bg-background text-foreground transition-colors noise-layer">
       <header className="sticky top-0 z-40 border-b border-border/60 bg-background/90 backdrop-blur">
         <div className="section-shell flex h-16 items-center justify-between">
-          <a href="#top" className="headline-font text-xl font-bold tracking-tight text-primary">
-            YANIPEL
+          <a href="#top" className="flex items-center">
+            <img src={yanipelLogo} alt="Yanipel logo officiel" className="h-10 w-auto object-contain" />
           </a>
           <nav className="hidden items-center gap-6 md:flex">
             {navItems.map((item) => (
@@ -241,44 +277,72 @@ function App() {
               </a>
             ))}
           </nav>
-          <Button asChild size="sm">
-            <a href="#contact">Réserver un call</a>
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              className="h-10 w-10 rounded-full border border-border/70 bg-background/80 p-0"
+              onClick={toggleTheme}
+              aria-label={theme === 'dark' ? 'Activer le mode clair' : 'Activer le mode sombre'}
+              title={theme === 'dark' ? 'Passer en mode clair' : 'Passer en mode sombre'}
+            >
+              {theme === 'dark' ? <Sun className="size-4" /> : <Moon className="size-4" />}
+            </Button>
+            <Button asChild size="sm">
+              <a href="#contact">Réserver un call</a>
+            </Button>
+          </div>
         </div>
       </header>
 
       <main id="top">
-        <section className="hero-grid relative isolate overflow-hidden pb-20 pt-16 sm:pt-24">
+        <section className="hero-grid relative isolate overflow-hidden min-h-[calc(100svh-4rem)]">
+          <video
+            className="absolute inset-0 block h-full w-full object-cover object-center"
+            autoPlay
+            loop
+            muted
+            playsInline
+            preload="metadata"
+            poster={yanipelLogo}
+            aria-hidden="true"
+          >
+            <source src={heroAiVideo} type="video/mp4" />
+          </video>
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-black/75 via-emerald-900/45 to-black/65" />
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_25%_20%,rgba(16,185,129,0.22),transparent_45%),radial-gradient(circle_at_80%_80%,rgba(249,115,22,0.18),transparent_40%)]" />
+
           <motion.div
             initial={{ scale: 0.85, opacity: 0.4 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 1.2 }}
-            className="pointer-events-none absolute -left-24 top-20 h-52 w-52 rounded-full bg-primary/25 blur-3xl"
+            className="pointer-events-none absolute -left-24 top-20 h-52 w-52 rounded-full bg-primary/35 blur-3xl"
           />
           <motion.div
             initial={{ scale: 0.8, opacity: 0.4 }}
             animate={{ scale: 1, opacity: 1 }}
             transition={{ duration: 1.35, delay: 0.15 }}
-            className="pointer-events-none absolute -right-20 top-8 h-72 w-72 rounded-full bg-accent/25 blur-3xl"
+            className="pointer-events-none absolute -right-20 top-8 h-72 w-72 rounded-full bg-accent/30 blur-3xl"
           />
 
-          <div className="section-shell relative">
+          <div className="section-shell relative z-10 flex min-h-[calc(100svh-4rem)] items-end py-16 sm:py-24">
             <motion.div initial="hidden" animate="show" className="max-w-4xl">
               <motion.div custom={0} variants={fadeUp}>
-                <Badge variant="accent" className="mb-5">
-                  Agence web AI-first à La Réunion
+                <Badge variant="accent" className="mb-5 border-white/35 bg-white/10 text-white">
+                  Agence web AI-first à La Réunion · Vidéo immersive
                 </Badge>
               </motion.div>
               <motion.h1
                 custom={1}
                 variants={fadeUp}
-                className="headline-font text-4xl font-extrabold leading-[1.04] tracking-tight sm:text-6xl lg:text-7xl"
+                className="headline-font text-4xl font-extrabold leading-[1.04] tracking-tight text-white sm:text-6xl lg:text-7xl"
               >
                 Votre site internet
-                <span className="text-primary"> 100x plus rapidement </span>
+                <span className="text-emerald-300"> 100x plus rapidement </span>
                 qu&apos;avant.
               </motion.h1>
-              <motion.p custom={2} variants={fadeUp} className="mt-6 max-w-2xl text-lg leading-relaxed text-foreground/80">
+              <motion.p custom={2} variants={fadeUp} className="mt-6 max-w-2xl text-lg leading-relaxed text-white/85">
                 Yanipel conçoit et lance des expériences web performantes pour particuliers, entrepreneurs et professionnels locaux. En partenariat avec YaniPay,
                 nous relions création, paiement, fidélisation et automatisation IA dans une seule exécution.
               </motion.p>
@@ -288,13 +352,13 @@ function App() {
                     Voir les tarifs <ArrowRight className="size-4" />
                   </a>
                 </Button>
-                <Button asChild variant="secondary" size="lg">
+                <Button asChild variant="secondary" size="lg" className="bg-white/10 text-white ring-white/35 hover:bg-white/20">
                   <a href="#methode">Découvrir la méthode</a>
                 </Button>
               </motion.div>
               <motion.div custom={4} variants={fadeUp} className="mt-10 grid gap-3 sm:grid-cols-3">
                 {['Offres transparentes', 'Workflow AI + n8n', 'Stack React moderne'].map((item) => (
-                  <div key={item} className="rounded-full border border-border/80 bg-white/75 px-4 py-2 text-center text-sm font-medium text-foreground/80">
+                  <div key={item} className="rounded-full border border-white/35 bg-white/10 px-4 py-2 text-center text-sm font-medium text-white/90 backdrop-blur">
                     {item}
                   </div>
                 ))}
@@ -387,7 +451,7 @@ function App() {
                 </p>
                 <div className="mt-6 grid gap-3 sm:grid-cols-2">
                   {['Prise de RDV 24/7', 'Appels prospects intelligents', 'Scénarios n8n sur mesure', 'Synchronisation CRM/agenda'].map((point) => (
-                    <div key={point} className="flex items-center gap-2 rounded-xl bg-white/80 px-4 py-3 text-sm font-semibold text-foreground/85">
+                    <div key={point} className="flex items-center gap-2 rounded-xl bg-background/85 px-4 py-3 text-sm font-semibold text-foreground/85">
                       <Check className="size-4 text-primary" />
                       {point}
                     </div>
@@ -494,7 +558,7 @@ function App() {
                 </div>
               </div>
               <div className="space-y-4">
-                <form onSubmit={handleLeadSubmit} className="rounded-2xl border border-border/70 bg-white/85 p-4">
+                <form onSubmit={handleLeadSubmit} className="rounded-2xl border border-border/70 bg-background/85 p-4">
                   <p className="mb-3 text-sm font-semibold uppercase tracking-[0.14em] text-foreground/55">Brief express</p>
                   <div className="grid gap-3">
                     <input
@@ -550,7 +614,7 @@ function App() {
                   { icon: Sparkles, label: 'Expérience premium' },
                   { icon: Layers, label: 'Évolutif par modules' },
                 ].map((item) => (
-                  <div key={item.label} className="flex items-center gap-3 rounded-2xl border border-border/70 bg-white/75 px-4 py-3">
+                  <div key={item.label} className="flex items-center gap-3 rounded-2xl border border-border/70 bg-background/80 px-4 py-3">
                     <item.icon className="size-5 text-primary" />
                     <span className="text-sm font-semibold text-foreground/80">{item.label}</span>
                   </div>
@@ -560,6 +624,28 @@ function App() {
           </motion.div>
         </section>
       </main>
+
+      <section className="border-y border-border/70 bg-muted/45 py-8">
+        <div className="section-shell">
+          <p className="mb-4 text-center text-xs font-semibold uppercase tracking-[0.18em] text-foreground/70">
+            Écosystème institutionnel & innovation
+          </p>
+          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-9">
+            {institutionalPartners.map((partner) => (
+              <div
+                key={partner.name}
+                className="flex min-h-16 items-center gap-3 rounded-2xl border border-border/70 bg-background/80 px-3 py-2 shadow-sm"
+                aria-label={partner.name}
+              >
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-primary/15 text-[10px] font-bold uppercase tracking-[0.06em] text-primary">
+                  {partner.sigle}
+                </div>
+                <p className="text-xs font-semibold leading-snug text-foreground/80">{partner.name}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
 
       <footer className="border-t border-border/60 pb-10 pt-8">
         <div className="section-shell flex flex-col gap-4 text-sm text-foreground/60 sm:flex-row sm:items-center sm:justify-between">
