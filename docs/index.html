@@ -12,11 +12,19 @@
       ;(() => {
         const host = window.location.hostname
         const isLocal = host === 'localhost' || host === '127.0.0.1'
-        const alreadyInDocs = window.location.pathname.startsWith('/docs/')
-        const hasSourceEntry = Boolean(document.querySelector('script[src="/src/main.tsx"]'))
-        if (!isLocal && !alreadyInDocs && hasSourceEntry) {
-          window.location.replace('/docs/')
+        if (isLocal) return
+        const checkAndRedirect = () => {
+          const alreadyInDocs = window.location.pathname.startsWith('/docs/')
+          const hasSourceEntry = Boolean(document.querySelector('script[src="/src/main.tsx"]'))
+          if (!alreadyInDocs && hasSourceEntry) {
+            window.location.replace('/docs/')
+          }
         }
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', checkAndRedirect, { once: true })
+          return
+        }
+        checkAndRedirect()
       })()
     </script>
     <script type="module" crossorigin src="./assets/index-Dq7LKw-M.js"></script>
