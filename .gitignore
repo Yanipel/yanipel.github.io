@@ -32,3 +32,5 @@ vite.config.d.ts
 .tmp/
 .codex/
 .claude/
+.npm-cache/
+.npm-tmp/
