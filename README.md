@@ -26,6 +26,15 @@ cp .env.example .env
 npm run dev
 ```
 
+## Déploiement GitHub Pages
+
+Le repo inclut un workflow GitHub Actions: `.github/workflows/deploy-pages.yml`.
+
+Si votre site affiche une page blanche sur GitHub Pages:
+- Ouvrez `Settings > Pages`
+- Choisissez `Source: GitHub Actions`
+- Re-déclenchez un push sur `main` (ou lancez le workflow manuellement)
+
 ## Payload envoyé au webhook
 
 Le formulaire envoie un `POST` JSON contenant:
