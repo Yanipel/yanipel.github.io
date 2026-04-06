@@ -12,6 +12,7 @@ import {
   Clock3,
   Code2,
   CreditCard,
+  ExternalLink,
   Globe,
   HandCoins,
   Layers,
@@ -229,6 +230,10 @@ const buildBrandfetchIconUrl = (domain: string, clientId?: string) => {
   return `https://cdn.brandfetch.io/${domain}/w/240/h/240/icon?c=${encodeURIComponent(clientId)}`
 }
 
+const buildGoogleFaviconUrl = (domain: string) => {
+  return `https://www.google.com/s2/favicons?sz=128&domain_url=${encodeURIComponent(`https://${domain}`)}`
+}
+
 type LeadFormData = {
   fullName: string
   email: string
@@ -303,7 +308,9 @@ function App() {
       const brandfetchLogo = buildBrandfetchIconUrl(partner.domain, brandfetchClientId)
       if (brandfetchLogo) return brandfetchLogo
     }
-    return partner.logoSrc
+    if (partner.logoSrc) return partner.logoSrc
+    if (partner.domain) return buildGoogleFaviconUrl(partner.domain)
+    return undefined
   }
 
   const markPartnerDomainAsFailed = (partner: InstitutionalPartner) => {
@@ -389,29 +396,7 @@ function App() {
       </header>
 
       <main id="top">
-        <section className="section-shell section-anchor pt-5" id="banniere">
-          <motion.div
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="relative overflow-hidden rounded-2xl border border-primary/35 bg-gradient-to-r from-primary/20 via-background to-accent/20 px-4 py-3 sm:px-6"
-          >
-            <div className="pointer-events-none absolute -left-16 top-1/2 h-24 w-24 -translate-y-1/2 rounded-full bg-primary/20 blur-2xl" />
-            <div className="pointer-events-none absolute -right-16 top-1/2 h-24 w-24 -translate-y-1/2 rounded-full bg-accent/20 blur-2xl" />
-            <div className="relative flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
-              <p className="text-sm font-semibold text-foreground/85">
-                Votre site internet <span className="text-primary">100x plus rapidement</span> qu&apos;avant.
-              </p>
-              <Button asChild size="sm">
-                <a href="#contact">
-                  Lancer mon projet <ArrowRight className="size-4" />
-                </a>
-              </Button>
-            </div>
-          </motion.div>
-        </section>
-
-        <section className="hero-grid relative isolate overflow-hidden min-h-[calc(100svh-4rem)]">
+        <section className="hero-grid relative isolate -mt-16 min-h-screen overflow-hidden pt-16">
           <video
             className="absolute inset-0 block h-full w-full object-cover object-center"
             autoPlay
@@ -440,7 +425,27 @@ function App() {
             className="pointer-events-none absolute -right-20 top-8 h-72 w-72 rounded-full bg-accent/30 blur-3xl"
           />
 
-          <div className="section-shell relative z-10 flex min-h-[calc(100svh-4rem)] items-center py-16 sm:py-20">
+          <div className="section-shell relative z-20 pt-6 sm:pt-8">
+            <motion.div
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="mx-auto max-w-5xl overflow-hidden rounded-2xl border border-white/25 bg-white/10 px-4 py-3 shadow-[0_20px_70px_rgba(0,0,0,0.25)] backdrop-blur-md sm:px-6"
+            >
+              <div className="relative flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
+                <p className="text-sm font-semibold text-white/90">
+                  Votre site internet, votre automatisation IA ou votre app mobile <span className="text-emerald-300">100x plus rapidement</span> qu&apos;avant.
+                </p>
+                <Button asChild size="sm" className="shrink-0">
+                  <a href="#contact">
+                    Lancer mon projet <ArrowRight className="size-4" />
+                  </a>
+                </Button>
+              </div>
+            </motion.div>
+          </div>
+
+          <div className="section-shell relative z-10 flex min-h-screen items-center py-24 sm:py-28">
             <motion.div initial="hidden" animate="show" className="mx-auto max-w-4xl text-center">
               <motion.div custom={0} variants={fadeUp}>
                 <Badge variant="accent" className="mb-5 border-white/35 bg-white/10 text-white">
@@ -457,8 +462,8 @@ function App() {
                 qu&apos;avant.
               </motion.h1>
               <motion.p custom={2} variants={fadeUp} className="mx-auto mt-6 max-w-2xl text-lg leading-relaxed text-white/85">
-                Yanipel conçoit et lance des expériences web performantes pour particuliers, entrepreneurs et professionnels locaux. En partenariat avec YaniPay,
-                nous relions création, paiement, fidélisation et automatisation IA dans une seule exécution.
+                Yanipel est une agence web AI-first à La Réunion. Nous concevons des sites internet, des applications mobiles et des automatisations IA pour particuliers,
+                entrepreneurs et professionnels locaux. En partenariat avec YaniPay, nous relions création, paiement, fidélisation et acquisition dans une seule exécution.
               </motion.p>
               <motion.div custom={3} variants={fadeUp} className="mt-8 flex flex-wrap items-center justify-center gap-3">
                 <Button asChild size="lg">
@@ -629,6 +634,51 @@ function App() {
                 </ul>
               </Card>
             </motion.div>
+          </motion.div>
+        </section>
+
+        <section className="section-shell section-anchor section-fade py-14 md:py-16" id="ecosysteme">
+          <motion.div initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }}>
+            <motion.div custom={0} variants={fadeUp} className="mb-8 max-w-3xl">
+              <Badge className="mb-3">Écosystème Yanipel</Badge>
+              <h2 className="headline-font text-3xl font-bold sm:text-4xl">Une exécution connectée entre portfolio, studio digital et fintech</h2>
+              <p className="mt-3 text-foreground/75">
+                Cette page s&apos;inscrit dans un ensemble cohérent: l&apos;univers personnel de Johan pour la crédibilité produit et design, puis YaniPay pour la couche paiement,
+                fidélisation et infrastructure business.
+              </p>
+            </motion.div>
+
+            <div className="grid gap-5 md:grid-cols-2">
+              <motion.div custom={1} variants={fadeUp}>
+                <Card className="h-full border-primary/35 card-interactive">
+                  <p className="mb-3 text-sm font-semibold uppercase tracking-[0.14em] text-foreground/50">Portfolio fondateur</p>
+                  <CardTitle>Johan LEPINAY · Portfolio technique et créatif</CardTitle>
+                  <CardDescription className="mt-3">
+                    Découvrez l&apos;univers de Johan, ses projets, son approche design et sa vision produit sur le portfolio public.
+                  </CardDescription>
+                  <Button asChild variant="secondary" className="mt-6">
+                    <a href="https://lepic974.github.io/" target="_blank" rel="noreferrer">
+                      Voir le portfolio <ExternalLink className="size-4" />
+                    </a>
+                  </Button>
+                </Card>
+              </motion.div>
+
+              <motion.div custom={2} variants={fadeUp}>
+                <Card className="h-full border-primary/35 card-interactive">
+                  <p className="mb-3 text-sm font-semibold uppercase tracking-[0.14em] text-foreground/50">Infrastructure partenaire</p>
+                  <CardTitle>YaniPay · Paiement, fidélisation et infrastructure financière</CardTitle>
+                  <CardDescription className="mt-3">
+                    Explorez la page entreprise YaniPay pour comprendre comment Yanipel s&apos;appuie sur une brique fintech moderne pour accélérer les parcours business.
+                  </CardDescription>
+                  <Button asChild variant="secondary" className="mt-6">
+                    <a href="https://yanipay.github.io/" target="_blank" rel="noreferrer">
+                      Voir YaniPay <ExternalLink className="size-4" />
+                    </a>
+                  </Button>
+                </Card>
+              </motion.div>
+            </div>
           </motion.div>
         </section>
 
@@ -830,7 +880,7 @@ function App() {
               Un écosystème solide pour accélérer votre croissance digitale à La Réunion
             </h2>
             <p className="mt-3 text-xs font-medium uppercase tracking-[0.14em] text-foreground/55">
-              Icônes synchronisées via Brandfetch
+              Logos et favicons synchronisés avec fallback automatique
             </p>
           </div>
 
