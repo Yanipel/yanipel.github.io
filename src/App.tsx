@@ -2,6 +2,7 @@ import { motion, useReducedMotion } from 'framer-motion'
 import { useEffect, useMemo, useState } from 'react'
 import type { FormEvent } from 'react'
 import {
+  Apple,
   ArrowRight,
   Bot,
   BriefcaseBusiness,
@@ -9,6 +10,7 @@ import {
   Check,
   CircleDot,
   Clock3,
+  Code2,
   CreditCard,
   Globe,
   HandCoins,
@@ -16,6 +18,7 @@ import {
   MessageCircle,
   Moon,
   Rocket,
+  Smartphone,
   Sparkles,
   Store,
   Sun,
@@ -40,6 +43,7 @@ const navItems = [
   { label: 'Secteurs', href: '#secteurs' },
   { label: 'Méthode', href: '#methode' },
   { label: 'Y.A.N.I.', href: '#yani' },
+  { label: 'Mobile', href: '#mobile' },
   { label: 'FAQ', href: '#faq' },
 ]
 
@@ -139,11 +143,44 @@ const pricing = [
     highlight: true,
   },
   {
+    plan: 'Application mobile',
+    price: 'Sur devis',
+    subtitle: 'Android, React Native ou iOS',
+    items: [
+      'Design UX mobile-first',
+      'Publication stores (App Store / Play Store)',
+      'Connexion API, paiement, notifications',
+      'Maintenance et évolutions possibles',
+    ],
+    highlight: false,
+  },
+  {
     plan: 'Automatisation IA',
     price: '299€/mois',
     subtitle: 'À partir de',
     items: ['Workflows n8n', 'Agent Y.A.N.I. RDV/prospection', 'Relances automatiques', 'Tableau de suivi'],
     highlight: false,
+  },
+]
+
+const mobileStacks = [
+  {
+    icon: Smartphone,
+    title: 'Android natif (Kotlin)',
+    description: 'Performance maximale, accès complet aux API Android et expérience optimisée pour le parc Android local.',
+    points: ['Architecture scalable', 'Intégration Google services', 'CI/CD Play Store'],
+  },
+  {
+    icon: Code2,
+    title: 'React Native',
+    description: 'Un seul socle pour iOS et Android, parfait pour aller vite en MVP puis itérer sans doubler le budget.',
+    points: ['Codebase partagée', 'Livraison accélérée', 'Compatibilité API existantes'],
+  },
+  {
+    icon: Apple,
+    title: 'iOS natif (SwiftUI)',
+    description: 'Expérience premium iPhone, animations fluides et conformité Apple pour une application haut de gamme.',
+    points: ['Design system Apple', 'Performance native', 'Validation App Store'],
   },
 ]
 
@@ -595,13 +632,54 @@ function App() {
           </motion.div>
         </section>
 
+        <section id="mobile" className="section-shell section-anchor section-fade py-14 md:py-16">
+          <motion.div initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }}>
+            <motion.div custom={0} variants={fadeUp} className="mb-8 max-w-3xl">
+              <Badge className="mb-3 border border-primary/45 bg-primary/10 text-primary">Offre Application mobile</Badge>
+              <h2 className="headline-font text-3xl font-bold sm:text-4xl">Choisissez la stack mobile adaptée à votre ambition</h2>
+              <p className="mt-3 text-foreground/75">
+                Yanipel conçoit votre app mobile de la stratégie produit jusqu&apos;à la publication. Vous choisissez l&apos;approche technique, nous pilotons la livraison et l&apos;évolution.
+              </p>
+            </motion.div>
+
+            <div className="grid gap-5 md:grid-cols-3">
+              {mobileStacks.map((stack, index) => (
+                <motion.div key={stack.title} custom={index + 1} variants={fadeUp}>
+                  <Card className="h-full border-primary/35 card-interactive">
+                    <div className="mb-3 inline-flex rounded-2xl border border-primary/30 bg-primary/10 p-3">
+                      <stack.icon className="size-5 text-primary" />
+                    </div>
+                    <CardTitle>{stack.title}</CardTitle>
+                    <CardDescription className="mt-3">{stack.description}</CardDescription>
+                    <ul className="mt-5 space-y-2">
+                      {stack.points.map((point) => (
+                        <li key={point} className="flex items-start gap-2 text-sm text-foreground/80">
+                          <Check className="mt-0.5 size-4 shrink-0 text-primary" />
+                          <span>{point}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </Card>
+                </motion.div>
+              ))}
+            </div>
+
+            <motion.div custom={4} variants={fadeUp} className="mt-6 rounded-3xl border border-primary/35 bg-gradient-to-r from-primary/15 via-background to-primary/10 p-5 sm:p-6">
+              <p className="text-sm font-semibold text-foreground/85">
+                Inclut cadrage produit, UI kit mobile, intégration back-end, QA et accompagnement au lancement.
+                <span className="text-primary"> Offre sur-mesure selon périmètre.</span>
+              </p>
+            </motion.div>
+          </motion.div>
+        </section>
+
         <section id="offres" className="section-shell section-anchor section-fade py-14 md:py-16">
           <motion.div initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }}>
             <motion.div custom={0} variants={fadeUp} className="mb-8 text-center">
               <Badge className="mb-3">Tarifs simples</Badge>
               <h2 className="headline-font text-3xl font-bold sm:text-4xl">Investissement clair, impact direct</h2>
             </motion.div>
-            <div className="grid gap-5 lg:grid-cols-3">
+            <div className="grid gap-5 md:grid-cols-2 xl:grid-cols-4">
               {pricing.map((offer, index) => (
                 <motion.div key={offer.plan} custom={index + 1} variants={fadeUp}>
                   <Card className={`card-interactive ${offer.highlight ? 'border-primary shadow-glow' : ''}`}>
@@ -707,6 +785,7 @@ function App() {
                     >
                       <option>Site Vitrine - 500€</option>
                       <option>Site E-commerce - 1200€</option>
+                      <option>Application mobile - sur devis</option>
                       <option>Automatisation IA - dès 299€/mois</option>
                       <option>Sur-mesure</option>
                     </select>
@@ -779,7 +858,7 @@ function App() {
                 return (
                   <div
                     key={`${partner.name}-${index}`}
-                    className="flex h-28 w-[208px] shrink-0 items-center justify-center rounded-2xl border border-border/70 bg-background/90 px-4 shadow-sm card-interactive"
+                    className="flex h-28 w-[208px] shrink-0 items-center justify-center rounded-2xl border border-border/70 bg-white/92 px-4 shadow-sm card-interactive"
                     aria-label={partner.name}
                   >
                     {partnerLogoSrc ? (

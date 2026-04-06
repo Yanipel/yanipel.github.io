@@ -10,7 +10,7 @@
   --color-primary: 5 150 105;
   --color-accent: 249 115 22;
   --color-muted: 232 223 207;
-  --color-border: 217 204 184;
+  --color-border: 110 177 152;
   color: rgb(var(--color-foreground));
   background-color: rgb(var(--color-background));
   font-family: 'Manrope', sans-serif;
@@ -22,7 +22,7 @@ html.dark {
   --color-primary: 16 185 129;
   --color-accent: 251 146 60;
   --color-muted: 20 34 28;
-  --color-border: 56 83 71;
+  --color-border: 45 110 92;
 }
 
 * {
